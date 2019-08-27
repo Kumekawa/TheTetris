@@ -10,11 +10,11 @@ void Field::Erase() {
 	if (eraseCounter == 0) {
 		//消すものが一つもなければステータスはeFSDownになる。
 		int eraseLine = 0;
-		for (int y = 0; y < MFS_YSIZE; ++y) {
+		for (int y = MFS_YOFFSET; y < MFS_YSIZE + MFS_YOFFSET; ++y) {
 			//消去フラグ。一つでも空白があればfalseになる。
 			bool eraseF = true;
 			for (int x = MFS_XOFFSET; x < MFS_XSIZE + MFS_XOFFSET; ++x) {
-				if (blocks[x][y] == eBSNone) {
+				if (blocks[x][y].status == eBSNone) {
 					eraseF = false;
 					break;
 				}
@@ -22,7 +22,7 @@ void Field::Erase() {
 			if (eraseF) {
 				eraseLine++;
 				for (int x = MFS_XOFFSET; x < MFS_XSIZE + MFS_XOFFSET; ++x) {
-					blocks[x][y] = eBSErase;
+					blocks[x][y].status = eBSErase;
 				}
 			}
 		}
@@ -36,8 +36,8 @@ void Field::Erase() {
 	else if (eraseCounter == 2) {
 		//実際に消す処理
 		for (int x = MFS_XOFFSET; x < MFS_XSIZE + MFS_XOFFSET; ++x) {
-			for (int y = 0; y < MFS_YSIZE; ++y) {
-				if (blocks[x][y] == eBSErase) {
+			for (int y = MFS_YOFFSET; y < MFS_YSIZE + MFS_YOFFSET; ++y) {
+				if (blocks[x][y].status == eBSErase) {
 					for (int k = y; k < MFS_YSIZE; ++k) {
 						blocks[x][y] = blocks[x][y + 1];
 					}
@@ -67,13 +67,13 @@ Field::Field() {
 
 void Field::Initialize() {
 	for (int x = 0; x < MFS_XSIZE + MFS_XOFFSET * 2; ++x) {
-		for (int y = 0; y < MFS_YSIZE + 2; ++y) {
-			blocks[x][y] = eBSExist;
+		for (int y = 0; y < MFS_YSIZE + MFS_YOFFSET * 2; ++y) {
+			blocks[x][y].status = eBSExist;
 		}
 	}
 	for (int x = MFS_XOFFSET; x < MFS_XSIZE + MFS_XOFFSET; ++x) {
-		for (int y = 0; y < MFS_YSIZE; ++y) {
-			blocks[x][y] = eBSExist;
+		for (int y = MFS_YOFFSET; y < MFS_YSIZE + MFS_YOFFSET; ++y) {
+			blocks[x][y].status = eBSExist;
 		}
 	}
 
@@ -103,36 +103,27 @@ void Field::Update() {
 
 void Field::Draw() {
 	for (int i = MFS_XOFFSET; i < MFS_XSIZE + MFS_XOFFSET; ++i) {
-		for (int j = 0; j < MFS_YSIZE; ++j) {
+		for (int j = MFS_YOFFSET; j < MFS_YSIZE + MFS_YOFFSET; ++j) {
 			int x = i - MFS_XOFFSET;
-			int y = MFS_YSIZE * MFS_UNITSIZE / 2;
+			int y = j - MFS_YOFFSET;
+			int yOffset = MFS_UNITSIZE * (MFS_YSIZE - MFS_YOFFSET * 2) / 2;
 
-			int color = MC_WHITE;
-			switch (blocks[i][j]) {
-			case eBSErase:
-				color = MC_RED;
-				break;
-			case eBSExist:
-				color = MC_BLUE;
-				break;
-			case eBSNone:
-			default:
-				color = MC_WHITE;
-				break;
-			}
-
-			DrawBox(x * MFS_UNITSIZE, j * MFS_UNITSIZE + y, (x + 1) * MFS_UNITSIZE, (j - 1) * MFS_UNITSIZE + y, color, 1);
+			DrawBox(x * MFS_UNITSIZE, y * MFS_UNITSIZE + yOffset, (x + 1) * MFS_UNITSIZE, (y - 1) * MFS_UNITSIZE + yOffset, blocks[i][j].color, 1);
 		}
 	}
 }
 
 void Field::SetMino(mino Mino) {
 	for (int i = 0; i < 4; ++i) {
-		blocks[Mino.blocks[i].x][Mino.blocks[i].y] = eBSExist;
+		blocks[Mino.block[i].pos.x][Mino.block[i].pos.y].status = eBSExist;
 	}
 	eFieldStatus = eFSErase;
 }
 
 bool Field::GetGameClockNow() {
 	return gameClockNow;
+}
+
+block Field::GetBlocks(int x, int y){
+	return blocks[x][y];
 }

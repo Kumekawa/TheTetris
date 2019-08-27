@@ -1,12 +1,10 @@
 #pragma once
+#include "block.h"
 
-struct position {
-	int x;
-	int y;
-};
 
 struct mino {
+	static const int blocksSize = 4;
 	//0個目をセンターとする。
-	position blocks[4];
+	block block[blocksSize];
 };
 

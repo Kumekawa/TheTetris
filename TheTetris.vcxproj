@@ -156,6 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseClass.h" />
+    <ClInclude Include="BasePlayer.h" />
+    <ClInclude Include="block.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="MacroWindowSize.h" />
     <ClInclude Include="mino.h" />
