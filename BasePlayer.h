@@ -10,10 +10,10 @@ class BasePlayer :public BaseClass {
 		//もし下に落ちられなかったら、その場所にセットする
 		bool ableDown = true;
 		for (int i = 0; i < downMino.blocksSize; ++i) {
-			int x = downMino.blocks[i].x;
-			int y = downMino.blocks[i].y;
+			int x = downMino.block[i].pos.x;
+			int y = downMino.block[i].pos.y;
 			//下に物があったら落ちられない
-			if (field->GetBlocks(x, y + 1) != eBSNone) {
+			if (field->GetBlocks(x, y + 1).status != eBSNone) {
 				ableDown = false;
 			}
 		}
@@ -21,7 +21,7 @@ class BasePlayer :public BaseClass {
 		if (ableDown) {
 			//落ちる
 			for (int i = 0; i < downMino.blocksSize; ++i) {
-				downMino.blocks[i].y++;
+				downMino.block[i].pos.y++;
 			}
 		}
 		else {
