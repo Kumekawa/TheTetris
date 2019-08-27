@@ -19,9 +19,9 @@ position * GetShapePosition(eminoshape eMinoShape, position center, edirection e
 	int k = 1;
 	for (int i = 0; i < shapeSize; ++i) {
 		for (int j = 0; j < shapeSize; ++j) {
-			if (minoShapes[eMinoShape][eDirection][i][j] == 1) {
+			if (minoShapes[eMinoShape][eDirection][j][i] == 1) {
 				pos[k].x += i - shapeSize / 2;
-				pos[k].y += j + shapeSize / 2;
+				pos[k].y += j - shapeSize / 2;
 				k++;
 				if (k >= 4) {
 					return pos;
