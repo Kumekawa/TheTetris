@@ -42,11 +42,5 @@ public:
 	bool GetGameClockNow();
 	block GetBlocks(int x, int y);
 	efieldstatus GetFieldStatus();
-	position GetCenter() {
-		position pos;
-		pos.x = (MFS_XSIZE + MFS_XOFFSET * 2) / 2;
-		pos.y = (MFS_YSIZE + MFS_YOFFSET * 2) / 2;
-
-		return pos;
-	}
+	position GetCenter();
 };

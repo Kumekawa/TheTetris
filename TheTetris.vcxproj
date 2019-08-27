@@ -161,10 +161,13 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="MacroWindowSize.h" />
     <ClInclude Include="mino.h" />
+    <ClInclude Include="PlayerHuman.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mino.cpp" />
+    <ClCompile Include="PlayerHuman.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

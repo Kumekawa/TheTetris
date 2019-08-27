@@ -2,7 +2,11 @@
 #include "MacroWindowSize.h"
 #include "DxLibAlways.h"
 #include "DxLibEndEffect.h"
+#include <vector>
+using namespace std;
 
+#include "Field.h"
+#include "PlayerHuman.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -25,8 +29,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//•`‰æ‰æ–Ê‚ð— ‚É
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	vector<BaseClass*> objects;
+
+	Field field;
+	objects.push_back(&field);
+
+	PlayerHuman player;
+	player.SetField(&field);
+	objects.push_back(&player);
+
+	for (int i = 0; i < objects.size(); ++i) {
+		objects[i]->Initialize();
+	}
+
 	while (ProcessMessage() == 0)
 	{
+		for (int i = 0; i < objects.size(); ++i) {
+			objects[i]->Update();
+			objects[i]->Draw();
+		}
 
 		if (DxLibEndEffect(true)) {
 			break;

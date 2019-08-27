@@ -69,11 +69,15 @@ void Field::Initialize() {
 	for (int x = 0; x < MFS_XSIZE + MFS_XOFFSET * 2; ++x) {
 		for (int y = 0; y < MFS_YSIZE + MFS_YOFFSET * 2; ++y) {
 			blocks[x][y].status = eBSExist;
+			blocks[x][y].color = MC_BLACK;
+			blocks[x][y].pos.x = x;
+			blocks[x][y].pos.y = y;
 		}
 	}
 	for (int x = MFS_XOFFSET; x < MFS_XSIZE + MFS_XOFFSET; ++x) {
 		for (int y = MFS_YOFFSET; y < MFS_YSIZE + MFS_YOFFSET; ++y) {
-			blocks[x][y].status = eBSExist;
+			blocks[x][y].status = eBSNone;
+			blocks[x][y].color = MC_WHITE;
 		}
 	}
 
@@ -87,6 +91,14 @@ void Field::Initialize() {
 void Field::Update() {
 	GameTimeCount();
 	if (GetGameClockNow()) {
+		for (int i = MFS_XOFFSET; i < MFS_XSIZE + MFS_XOFFSET; ++i) {
+			for (int j = MFS_YOFFSET; j < MFS_YSIZE + MFS_YOFFSET; ++j) {
+				if (blocks[i][j].status == eBSDown) {
+					blocks[i][j].status = eBSNone;
+					blocks[i][j].color = MC_WHITE;
+				}
+			}
+		}
 		switch (eFieldStatus)
 		{
 		case eFSDown:
@@ -134,4 +146,12 @@ block Field::GetBlocks(int x, int y){
 
 efieldstatus Field::GetFieldStatus() {
 	return eFieldStatus;
+}
+
+position Field::GetCenter() {
+	position pos;
+	pos.x = (MFS_XSIZE + MFS_XOFFSET * 2) / 2;
+	pos.y = (MFS_YSIZE + MFS_YOFFSET * 2) / 2;
+
+	return pos;
 }
