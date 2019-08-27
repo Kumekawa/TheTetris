@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseClass.h"
 #include "Field.h"
+#include "DxLib.h"
 
 class BasePlayer :public BaseClass {
 	Field* field;
@@ -25,20 +26,29 @@ class BasePlayer :public BaseClass {
 			}
 		}
 		else {
-			//—Ž‚¿‚È‚¢‚Ì‚ÅƒZƒbƒg‚·‚é
-			field->SetMino(downMino);
+			//—Ž‚¿‚È‚¢
+			for (int i = 0; i < downMino.blocksSize; ++i) {
+				downMino.block[i].status = eBSExist;
+			}
 		}
+		field->SetMino(downMino,downMino.block[0].status);
+	}
+
+	void SetNextMino() {
+		downMino.SetBlocks((eminoshape)GetRand(minoShapeAmount - 1), field->GetCenter());
 	}
 
 	virtual void MoveParallel() = 0;
 public:
 
 	void Initialize() {
-
+		SetNextMino();
 	}
 	void Update() {
 		if (field->GetGameClockNow()) {
-			DownMino();
+			if (field->GetFieldStatus() == eFSDown) {
+				DownMino();
+			}
 		}
 	}
 	void Draw() {

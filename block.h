@@ -3,6 +3,7 @@
 
 enum eblockstatus {
 	eBSNone,
+	eBSDown,
 	eBSExist,
 	eBSErase
 };
@@ -15,7 +16,6 @@ struct position {
 
 struct block {
 	eblockstatus status;
-	bool downF;
 	int color;
 	position pos;
 };

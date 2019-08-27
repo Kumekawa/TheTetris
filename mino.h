@@ -1,6 +1,7 @@
 #pragma once
 #include "block.h"
 
+constexpr int minoShapeAmount = 7;
 enum eminoshape {
 	eMS_I,
 	eMS_O,
@@ -21,7 +22,7 @@ enum edirection {
 static const int shapeSize = 5;
 //1ŒÂ–Ú:ƒ~ƒm‚Ì•ûŒü
 //2,3ŒÂ–Ú:ƒ~ƒm‚Ì‹ï‘Ì“I‚ÈŒ`
-static int minoShapes[7][4][shapeSize][shapeSize] = 
+static int minoShapes[minoShapeAmount][4][shapeSize][shapeSize] = 
 {
 	{	
 		{

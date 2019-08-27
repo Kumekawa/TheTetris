@@ -14,7 +14,7 @@ void Field::Erase() {
 			//消去フラグ。一つでも空白があればfalseになる。
 			bool eraseF = true;
 			for (int x = MFS_XOFFSET; x < MFS_XSIZE + MFS_XOFFSET; ++x) {
-				if (blocks[x][y].status == eBSNone) {
+				if (blocks[x][y].status != eBSExist) {
 					eraseF = false;
 					break;
 				}
@@ -113,12 +113,16 @@ void Field::Draw() {
 	}
 }
 
-void Field::SetMino(mino Mino) {
+void Field::SetMino(mino Mino,eblockstatus eBlockStatus) {
 	for (int i = 0; i < 4; ++i) {
-		blocks[Mino.block[i].pos.x][Mino.block[i].pos.y].status = eBSExist;
+		blocks[Mino.block[i].pos.x][Mino.block[i].pos.y].status = eBlockStatus;
+		blocks[Mino.block[i].pos.x][Mino.block[i].pos.y].color = Mino.block[i].color;
 	}
-	eFieldStatus = eFSErase;
+	if (eBlockStatus == eBSExist) {
+		eFieldStatus = eFSErase;
+	}
 }
+
 
 bool Field::GetGameClockNow() {
 	return gameClockNow;
@@ -126,4 +130,8 @@ bool Field::GetGameClockNow() {
 
 block Field::GetBlocks(int x, int y){
 	return blocks[x][y];
+}
+
+efieldstatus Field::GetFieldStatus() {
+	return eFieldStatus;
 }
